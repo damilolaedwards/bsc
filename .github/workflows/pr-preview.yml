@@ -31,6 +31,8 @@ jobs:
         run: |
           cargo install --git https://github.com/montyly/mdBook.git mdbook || true
           mdbook build
+          ls ./pr-preview
+          ls book
       - name: Include PR preview in master build
         run: mv pr-preview/pr-${{ github.event.pull_request.number }} book/pr-${{ github.event.pull_request.number }}
       - name: Upload artifact
