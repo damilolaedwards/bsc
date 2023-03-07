@@ -1,0 +1,57 @@
+name: PR preview
+
+on:
+  pull_request_target:
+    types: [opened, reopened, closed, reopened]
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Create directory
+        run: mkdir -p "pr-preview/pr-${{ github.event.pull_request.number }}"
+      - name: Copy pull request contents to new directory
+        run: rsync -av --exclude="pr-preview/*" . "pr-preview/pr-${{ github.event.pull_request.number }}"
+      - name: Checkout master branch
+        uses: actions/checkout@v3
+        with:
+          ref: "master"
+          path: "pr-preview"
+  build:
+    needs: checkout
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install mdbook
+        run: |
+          cargo install --git https://github.com/montyly/mdBook.git mdbook || true
+      - name: Build artifacts
+        run: mdbook build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          path: ./book
+  deploy:
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+  cleanup:
+    needs: checkout
+    if: github.event_name == 'pull_request_target' && (github.event.pull_request.merged == true || github.event.pull_request.state == 'closed')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove the directory
+        run: rm -rf "pr-preview/pr-${{ github.event.pull_request.number }}"
