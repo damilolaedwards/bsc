@@ -21,6 +21,7 @@ jobs:
         run: |
           cargo install --git https://github.com/montyly/mdBook.git mdbook || true
           mdbook build ./pr-preview -d pr-preview/pr-${{ github.event.pull_request.number }}
+          ls -la ./pr-preview
       - name: Copy PR build to new directory
         run: rsync -av --exclude=pr-preview/* pr-preview/pr-${{ github.event.pull_request.number }} pr-preview/
       - name: Checkout master branch
