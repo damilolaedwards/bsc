@@ -117,3 +117,4 @@
 
 
 - [Resources](./resources/tob_blogposts.md)
+- [Resources](./resources/tob_blogposts.md)
