@@ -27,7 +27,7 @@ jobs:
       - name: Cache master build artifacts
         uses: actions/cache@v3
         with:
-          path: book
+          path: ./book/*
           key: book
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1
