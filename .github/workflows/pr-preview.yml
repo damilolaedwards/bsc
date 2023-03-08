@@ -42,7 +42,7 @@ jobs:
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1
         with:
-          source-dir: ./build/
+          source-dir: ./book/
       - name: Checkout gh-pages branch
         uses: actions/checkout@v2
         with:
