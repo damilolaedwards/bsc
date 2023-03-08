@@ -72,4 +72,19 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-
+  cleanup:
+    if: github.event.action == 'closed' || github.event.action == 'merged'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Delete directory
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git rm -r pr-preview/pr-${{ github.event.pull_request.number }}
+          git commit -m "Delete directory pr-${{ github.event.pull_request.number }}"
+          git push
