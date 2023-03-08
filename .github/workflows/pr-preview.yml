@@ -15,9 +15,10 @@ jobs:
   deploy-preview:
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout master branch
+        uses: actions/checkout@v2
         with:
+          ref: master
           fetch-depth: 0
       - name: Install mdbook
         run: |
@@ -25,22 +26,27 @@ jobs:
       - name: Build artifacts
         run: mdbook build
       - name: Cache master build artifacts
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
-          path: ./book/*
-          key: book
+          path: ./book
+          key: book-${{ hashFiles('**/mdbook.lock') }}
+          restore-keys: book-
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: ./book/
-      - name: Checkout branch
-        uses: actions/checkout@v3
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v2
         with:
           ref: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Restore master build artifacts from cache
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
-          path: book
-          key: book
+          path: ./book
+          key: book-${{ hashFiles('**/mdbook.lock') }}
       - name: Inspect dir contents
-        run: ls -la
+        run: |
+          ls -la
+          ls -la pr-preview
+
