@@ -48,7 +48,8 @@ jobs:
       - name: Include PR preview in master build
         run: |
           mv pr-preview/pr-${{ github.event.pull_request.number }} book/pr-${{ github.event.pull_request.number }}
-          ls -la ./book
+          ls -la ./book/pr-preview/
+          ls -la ./book/pr-13/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
