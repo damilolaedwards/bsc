@@ -26,11 +26,10 @@ jobs:
       - name: Build artifacts
         run: mdbook build
       - name: Cache master build artifacts
-        uses: actions/cache@v2
+        uses: actions/cache/save@v3
         with:
           path: ./book
-          key: book-${{ hashFiles('**/mdbook.lock') }}
-          restore-keys: book-
+          key: master-book
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1
         with:
@@ -41,10 +40,10 @@ jobs:
           ref: gh-pages
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Restore master build artifacts from cache
-        uses: actions/cache@v2
+        uses: actions/cache/restore@v3
         with:
           path: ./book
-          key: book-${{ hashFiles('**/mdbook.lock') }}
+          key: master-book
       - name: Inspect dir contents
         run: |
           ls -la
