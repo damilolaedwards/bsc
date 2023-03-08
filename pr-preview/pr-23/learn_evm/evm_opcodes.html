@@ -1,0 +1,1039 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>EVM Opcode Reference - Building Secure Contracts</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="This repository, brought to you by Trail of Bits, outlines our guidelines and best practices to write secure smart contracts.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../static/custom.css">
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <div class="sidebar-book-logo">
+                    <img src="../static/TOB_Black.svg">
+                </div>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded "><a href="../development-guidelines/index.html">Development-guidelines</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../development-guidelines/guidelines.html">High-level best practices</a></li><li class="chapter-item "><a href="../development-guidelines/token_integration.html">Token integration checklist</a></li><li class="chapter-item "><a href="../development-guidelines/incident_response.html">Incident Response Recommendations</a></li><li class="chapter-item "><a href="../development-guidelines/workflow.html">Secure development workflow</a></li></ol></li><li class="chapter-item expanded "><a href="../learn_evm/index.html">Learn EVM</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../learn_evm/evm_opcodes.html" class="active">EVM Opcode Reference</a></li><li class="chapter-item "><a href="../learn_evm/tracing.html">Transaction Tracing</a></li><li class="chapter-item "><a href="../learn_evm/yellow-paper.html">Yellow Paper Guidance</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../learn_evm/eips_forks.html">Forks &lt;&gt; EIPs</a></li><li class="chapter-item "><a href="../learn_evm/cips_forks.html">Forks &lt;&gt; CIPs</a></li><li class="chapter-item "><a href="../learn_evm/tips_upgrades.html">Upgrades &lt;&gt; TIPs</a></li><li class="chapter-item "><a href="../learn_evm/beps_forks.html">Forks &lt;&gt; BEPs</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../not-so-smart-contracts/index.html">Not so smart contracts</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../not-so-smart-contracts/algorand/index.html">Algorand</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../not-so-smart-contracts/algorand/rekeying/index.html">Rekeying</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/algorand/unchecked_transaction_fee/index.html">Unchecked Transaction Fees</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/algorand/closing_account/index.html">Closing Account</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/algorand/closing_asset/index.html">Closing Asset</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/algorand/group_size_check/index.html">Group Size Check</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/algorand/time_based_replay_attack/index.html">Time-based Replay Attack</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/algorand/access_controls/index.html">Access Controls</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/algorand/asset_id_check/index.html">Asset Id Check</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/algorand/denial_of_service/index.html">Denial of Service</a></li></ol></li><li class="chapter-item "><a href="../not-so-smart-contracts/cairo/index.html">Cairo</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../not-so-smart-contracts/cairo/access_controls/index.html">Improper access controls</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cairo/integer_division/index.html">Integer division errors</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cairo/view_state/index.html">View state modifications</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cairo/arithmetic_overflow/index.html">Arithmetic overflow</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cairo/replay_protection/index.html">Signature replays</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cairo/L1_to_L2_address_conversion/index.html">L1 to L2 Address Conversion</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cairo/incorrect_felt_comparison/index.html">Incorrect Felt Comparison</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cairo/namespace_storage_var_collision/index.html">Namespace Storage Var Collision</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cairo/dangerous_public_imports_in_libraries/index.html">Dangerous Public Imports in Libraries</a></li></ol></li><li class="chapter-item "><a href="../not-so-smart-contracts/cosmos/index.html">Cosmos</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../not-so-smart-contracts/cosmos/incorrect_getsigners/index.html">Incorrect signers</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cosmos/non_determinism/index.html">Non-determinism</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cosmos/messages_priority/index.html">Not prioritized messages</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cosmos/abci_fast/index.html">Slow ABCI methods</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cosmos/abci_panic/index.html">ABCI methods panic</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cosmos/broken_bookkeeping/index.html">Broken bookkeeping</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cosmos/rounding_errors/index.html">Rounding errors</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cosmos/unregistered_msg_handler/index.html">Unregistered message handler</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/cosmos/missing_error_handler/index.html">Missing error handler</a></li></ol></li><li class="chapter-item "><a href="../not-so-smart-contracts/solana/index.html">Solana</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../not-so-smart-contracts/solana/arbitrary_cpi/index.html">Arbitrary CPI</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/solana/improper_pda_validation/index.html">Improper PDA Validation</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/solana/ownership_check/index.html">Ownership Check</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/solana/signer_check/index.html">Signer Check</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/solana/sysvar_account_check/index.html">Sysvar Account Check</a></li></ol></li><li class="chapter-item "><a href="../not-so-smart-contracts/substrate/index.html">Substrate</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../not-so-smart-contracts/substrate/arithmetic_overflow/index.html">Arithmetic overflow</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/substrate/dont_panic/index.html">Don't panic!</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/substrate/weights_and_fees/index.html">Weights and fees</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/substrate/verify_first/index.html">Verify first</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/substrate/validate_unsigned/index.html">Unsigned transaction validation</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/substrate/randomness/index.html">Bad randomness</a></li><li class="chapter-item "><a href="../not-so-smart-contracts/substrate/origins/index.html">Bad origin</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../program-analysis/index.html">Program Analysis</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../program-analysis/echidna/index.html">Echidna</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../program-analysis/echidna/introduction/index.html">Introduction</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../program-analysis/echidna/introduction/fuzzing-introduction.html">Introduction to fuzzing</a></li><li class="chapter-item "><a href="../program-analysis/echidna/introduction/how-to-test-a-property.html">How to test a property</a></li></ol></li><li class="chapter-item "><a href="../program-analysis/echidna/basic/index.html">Basic</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../program-analysis/echidna/basic/testing-modes.html">How to select the most suitable testing mode</a></li><li class="chapter-item "><a href="../program-analysis/echidna/basic/common-testing-approaches.html">How to select the best testing approach</a></li><li class="chapter-item "><a href="../program-analysis/echidna/basic/filtering-functions.html">How to filter functions</a></li><li class="chapter-item "><a href="../program-analysis/echidna/basic/assertion-checking.html">How to test assertions</a></li><li class="chapter-item "><a href="../program-analysis/echidna/basic/property-creation.html">How to write good properties step by step</a></li></ol></li><li class="chapter-item "><a href="../program-analysis/echidna/advanced/index.html">Advanced</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../program-analysis/echidna/advanced/collecting-a-corpus.html">How to collect a corpus</a></li><li class="chapter-item "><a href="../program-analysis/echidna/advanced/optimization_mode.html">How to use optimization mode</a></li><li class="chapter-item "><a href="../program-analysis/echidna/advanced/finding-transactions-with-high-gas-consumption.html">How to detect high gas consumption</a></li><li class="chapter-item "><a href="../program-analysis/echidna/advanced/smart-contract-fuzzing-at-scale.html">How to perform smart contract fuzzing at a large scale</a></li><li class="chapter-item "><a href="../program-analysis/echidna/advanced/testing-bytecode.html">How to test bytecode-only contracts</a></li><li class="chapter-item "><a href="../program-analysis/echidna/advanced/hevm-cheats-to-test-permit.html">How to use hevm cheats to test permit</a></li><li class="chapter-item "><a href="../program-analysis/echidna/advanced/end-to-end-testing.html">How to seed Echidna with unit tests</a></li><li class="chapter-item "><a href="../program-analysis/echidna/advanced/using-multi-abi.html">Understanding and using multi-abi</a></li></ol></li><li class="chapter-item "><a href="../program-analysis/echidna/fuzzing_tips.html">Fuzzing tips</a></li><li class="chapter-item "><a href="../program-analysis/echidna/frequently_asked_questions.html">Frequently Asked Questions</a></li><li class="chapter-item "><a href="../program-analysis/echidna/exercises/index.html">Exercises</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../program-analysis/echidna/exercises/Exercise-1.html">Exercise 1</a></li><li class="chapter-item "><a href="../program-analysis/echidna/exercises/Exercise-2.html">Exercise 2</a></li><li class="chapter-item "><a href="../program-analysis/echidna/exercises/Exercise-3.html">Exercise 3</a></li><li class="chapter-item "><a href="../program-analysis/echidna/exercises/Exercise-4.html">Exercise 4</a></li><li class="chapter-item "><a href="../program-analysis/echidna/exercises/Exercise-5.html">Exercise 5</a></li><li class="chapter-item "><a href="../program-analysis/echidna/exercises/Exercise-6.html">Exercise 6</a></li><li class="chapter-item "><a href="../program-analysis/echidna/exercises/Exercise-7.html">Exercise 7</a></li><li class="chapter-item "><a href="../program-analysis/echidna/exercises/Exercise-8.html">Exercise 8</a></li></ol></li></ol></li><li class="chapter-item "><a href="../program-analysis/manticore/index.html">Manticore</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../program-analysis/manticore/symbolic-execution-introduction.html">Introduction to symbolic execution</a></li><li class="chapter-item "><a href="../program-analysis/manticore/running-under-manticore.html">Running under Manticore</a></li><li class="chapter-item "><a href="../program-analysis/manticore/getting-throwing-paths.html">Getting throwing paths</a></li><li class="chapter-item "><a href="../program-analysis/manticore/adding-constraints.html">Adding constraints</a></li><li class="chapter-item "><a href="../program-analysis/manticore/exercises/index.html">Exercises</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../program-analysis/manticore/exercises/example.html">Example</a></li><li class="chapter-item "><a href="../program-analysis/manticore/exercises/exercise1.html">Exercise 1</a></li><li class="chapter-item "><a href="../program-analysis/manticore/exercises/exercise2.html">Exercise 2</a></li></ol></li></ol></li><li class="chapter-item "><a href="../program-analysis/slither/index.html">Slither</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../program-analysis/slither/static_analysis.html">Static Analysis</a></li><li class="chapter-item "><a href="../program-analysis/slither/api.html">API</a></li><li class="chapter-item "><a href="../program-analysis/slither/exercise1.html">Exercise 1</a></li><li class="chapter-item "><a href="../program-analysis/slither/exercise2.html">Exercise 2</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../resources/tob_blogposts.html">Resources</a></li><li class="chapter-item expanded "><a href="../resources/tob_blogposts.html">Resources</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Building Secure Contracts</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/crytic/building-secure-contracts" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/crytic/building-secure-contracts/edit/master/./learn_evm/evm_opcodes.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="ethereum-vm-evm-opcodes-and-instruction-reference"><a class="header" href="#ethereum-vm-evm-opcodes-and-instruction-reference">Ethereum VM (EVM) Opcodes and Instruction Reference</a></h1>
+<p>This reference consolidates EVM opcode information from the <a href="http://gavwood.com/paper.pdf">yellow paper</a>, <a href="https://ethereum.stackexchange.com/questions/119/what-opcodes-are-available-for-the-ethereum-evm">stack exchange</a>, <a href="https://github.com/ethereum/solidity/blob/c61610302aa2bfa029715b534719d25fe3949059/libevmasm/Instruction.h#L40">solidity source</a>, <a href="https://github.com/paritytech/parity/blob/d365281cce919edc42340c97ce212f49d9447d2d/ethcore/evm/src/instructions.rs#L311">parity source</a>, <a href="https://github.com/djrtwo/evm-opcode-gas-costs/blob/master/opcode-gas-costs_EIP-150_revision-1e18248_2017-04-12.csv">evm-opcode-gas-costs</a> and <a href="https://github.com/trailofbits/manticore/blob/c6f457d72e1164c4c8c6d0256fe9b8b765d2cb24/manticore/platforms/evm.py#L590">Manticore</a>.</p>
+<h2 id="notes"><a class="header" href="#notes">Notes</a></h2>
+<p>The size of a &quot;word&quot; in EVM is 256 bits.</p>
+<p>The gas information is a work in progress. If an asterisk is in the Gas column, the base cost is shown but may vary based on the opcode arguments.</p>
+<h2 id="table"><a class="header" href="#table">Table</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Opcode</th><th>Name</th><th>Description</th><th>Extra Info</th><th>Gas</th></tr></thead><tbody>
+<tr><td><a href="#stop"><code>0x00</code></a></td><td>STOP</td><td>Halts execution</td><td>-</td><td>0</td></tr>
+<tr><td><a href="#add"><code>0x01</code></a></td><td>ADD</td><td>Addition operation</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#mul"><code>0x02</code></a></td><td>MUL</td><td>Multiplication operation</td><td>-</td><td>5</td></tr>
+<tr><td><a href="#sub"><code>0x03</code></a></td><td>SUB</td><td>Subtraction operation</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#div"><code>0x04</code></a></td><td>DIV</td><td>Integer division operation</td><td>-</td><td>5</td></tr>
+<tr><td><a href="#sdiv"><code>0x05</code></a></td><td>SDIV</td><td>Signed integer division operation (truncated)</td><td>-</td><td>5</td></tr>
+<tr><td><a href="#mod"><code>0x06</code></a></td><td>MOD</td><td>Modulo remainder operation</td><td>-</td><td>5</td></tr>
+<tr><td><a href="#smod"><code>0x07</code></a></td><td>SMOD</td><td>Signed modulo remainder operation</td><td>-</td><td>5</td></tr>
+<tr><td><a href="#addmod"><code>0x08</code></a></td><td>ADDMOD</td><td>Modulo addition operation</td><td>-</td><td>8</td></tr>
+<tr><td><a href="#mulmod"><code>0x09</code></a></td><td>MULMOD</td><td>Modulo multiplication operation</td><td>-</td><td>8</td></tr>
+<tr><td><a href="#exp"><code>0x0a</code></a></td><td>EXP</td><td>Exponential operation</td><td>-</td><td>10*</td></tr>
+<tr><td><a href="#signextend"><code>0x0b</code></a></td><td>SIGNEXTEND</td><td>Extend length of two's complement signed integer</td><td>-</td><td>5</td></tr>
+<tr><td><code>0x0c</code> - <code>0x0f</code></td><td>Unused</td><td>Unused</td><td>-</td><td></td></tr>
+<tr><td><a href="#lt"><code>0x10</code></a></td><td>LT</td><td>Less-than comparison</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#gt"><code>0x11</code></a></td><td>GT</td><td>Greater-than comparison</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#slt"><code>0x12</code></a></td><td>SLT</td><td>Signed less-than comparison</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#sgt"><code>0x13</code></a></td><td>SGT</td><td>Signed greater-than comparison</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#eq"><code>0x14</code></a></td><td>EQ</td><td>Equality comparison</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#iszero"><code>0x15</code></a></td><td>ISZERO</td><td>Simple not operator</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#and"><code>0x16</code></a></td><td>AND</td><td>Bitwise AND operation</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#or"><code>0x17</code></a></td><td>OR</td><td>Bitwise OR operation</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#xor"><code>0x18</code></a></td><td>XOR</td><td>Bitwise XOR operation</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#not"><code>0x19</code></a></td><td>NOT</td><td>Bitwise NOT operation</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#byte"><code>0x1a</code></a></td><td>BYTE</td><td>Retrieve single byte from word</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#shl"><code>0x1b</code></a></td><td>SHL</td><td>Shift Left</td><td><a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-145.md">EIP145</a></td><td>3</td></tr>
+<tr><td><a href="#shr"><code>0x1c</code></a></td><td>SHR</td><td>Logical Shift Right</td><td><a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-145.md">EIP145</a></td><td>3</td></tr>
+<tr><td><a href="#sar"><code>0x1d</code></a></td><td>SAR</td><td>Arithmetic Shift Right</td><td><a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-145.md">EIP145</a></td><td>3</td></tr>
+<tr><td><a href="#keccak256"><code>0x20</code></a></td><td>KECCAK256</td><td>Compute Keccak-256 hash</td><td>-</td><td>30*</td></tr>
+<tr><td><code>0x21</code> - <code>0x2f</code></td><td>Unused</td><td>Unused</td><td></td><td></td></tr>
+<tr><td><a href="#address"><code>0x30</code></a></td><td>ADDRESS</td><td>Get address of currently executing account</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#balance"><code>0x31</code></a></td><td>BALANCE</td><td>Get balance of the given account</td><td>-</td><td>700</td></tr>
+<tr><td><a href="#origin"><code>0x32</code></a></td><td>ORIGIN</td><td>Get execution origination address</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#caller"><code>0x33</code></a></td><td>CALLER</td><td>Get caller address</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#callvalue"><code>0x34</code></a></td><td>CALLVALUE</td><td>Get deposited value by the instruction/transaction responsible for this execution</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#calldataload"><code>0x35</code></a></td><td>CALLDATALOAD</td><td>Get input data of current environment</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#calldatasize"><code>0x36</code></a></td><td>CALLDATASIZE</td><td>Get size of input data in current environment</td><td>-</td><td>2*</td></tr>
+<tr><td><a href="#calldatacopy"><code>0x37</code></a></td><td>CALLDATACOPY</td><td>Copy input data in current environment to memory</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#codesize"><code>0x38</code></a></td><td>CODESIZE</td><td>Get size of code running in current environment</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#codecopy"><code>0x39</code></a></td><td>CODECOPY</td><td>Copy code running in current environment to memory</td><td>-</td><td>3*</td></tr>
+<tr><td><a href="#gasprice"><code>0x3a</code></a></td><td>GASPRICE</td><td>Get price of gas in current environment</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#extcodesize"><code>0x3b</code></a></td><td>EXTCODESIZE</td><td>Get size of an account's code</td><td>-</td><td>700</td></tr>
+<tr><td><a href="#extcodecopy"><code>0x3c</code></a></td><td>EXTCODECOPY</td><td>Copy an account's code to memory</td><td>-</td><td>700*</td></tr>
+<tr><td><a href="#returndatasize"><code>0x3d</code></a></td><td>RETURNDATASIZE</td><td>Pushes the size of the return data buffer onto the stack</td><td><a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-211.md">EIP 211</a></td><td>2</td></tr>
+<tr><td><a href="#returndatacopy"><code>0x3e</code></a></td><td>RETURNDATACOPY</td><td>Copies data from the return data buffer to memory</td><td><a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-211.md">EIP 211</a></td><td>3</td></tr>
+<tr><td><a href="#extcodehash"><code>0x3f</code></a></td><td>EXTCODEHASH</td><td>Returns the keccak256 hash of a contract's code</td><td><a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1052.md">EIP 1052</a></td><td>700</td></tr>
+<tr><td><a href="#blockhash"><code>0x40</code></a></td><td>BLOCKHASH</td><td>Get the hash of one of the 256 most recent complete blocks</td><td>-</td><td>20</td></tr>
+<tr><td><a href="#coinbase"><code>0x41</code></a></td><td>COINBASE</td><td>Get the block's beneficiary address</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#timestamp"><code>0x42</code></a></td><td>TIMESTAMP</td><td>Get the block's timestamp</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#number"><code>0x43</code></a></td><td>NUMBER</td><td>Get the block's number</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#difficulty"><code>0x44</code></a></td><td>DIFFICULTY</td><td>Get the block's difficulty</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#gaslimit"><code>0x45</code></a></td><td>GASLIMIT</td><td>Get the block's gas limit</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#chainid"><code>0x46</code></a></td><td>CHAINID</td><td>Returns the current chain’s EIP-155 unique identifier</td><td><a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1344.md">EIP 1344</a></td><td>2</td></tr>
+<tr><td><code>0x47</code> - <code>0x4f</code></td><td>Unused</td><td>-</td><td></td><td></td></tr>
+<tr><td><a href="#basefee"><code>0x48</code></a></td><td>BASEFEE</td><td>Returns the value of the base fee of the current block it is executing in.</td><td><a href="https://eips.ethereum.org/EIPS/eip-3198">EIP 3198</a></td><td>2</td></tr>
+<tr><td><a href="#pop"><code>0x50</code></a></td><td>POP</td><td>Remove word from stack</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#mload"><code>0x51</code></a></td><td>MLOAD</td><td>Load word from memory</td><td>-</td><td>3*</td></tr>
+<tr><td><a href="#mstore"><code>0x52</code></a></td><td>MSTORE</td><td>Save word to memory</td><td>-</td><td>3*</td></tr>
+<tr><td><a href="#mstore8"><code>0x53</code></a></td><td>MSTORE8</td><td>Save byte to memory</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#sload"><code>0x54</code></a></td><td>SLOAD</td><td>Load word from storage</td><td>-</td><td>800</td></tr>
+<tr><td><a href="#sstore"><code>0x55</code></a></td><td>SSTORE</td><td>Save word to storage</td><td>-</td><td>20000**</td></tr>
+<tr><td><a href="#jump"><code>0x56</code></a></td><td>JUMP</td><td>Alter the program counter</td><td>-</td><td>8</td></tr>
+<tr><td><a href="#jumpi"><code>0x57</code></a></td><td>JUMPI</td><td>Conditionally alter the program counter</td><td>-</td><td>10</td></tr>
+<tr><td><a href="#pc"><code>0x58</code></a></td><td>PC</td><td>Get the value of the program counter prior to the increment</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#msize"><code>0x59</code></a></td><td>MSIZE</td><td>Get the size of active memory in bytes</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#gas"><code>0x5a</code></a></td><td>GAS</td><td>Get the amount of available gas, including the corresponding reduction for the cost of this instruction</td><td>-</td><td>2</td></tr>
+<tr><td><a href="#jumpdest"><code>0x5b</code></a></td><td>JUMPDEST</td><td>Mark a valid destination for jumps</td><td>-</td><td>1</td></tr>
+<tr><td><code>0x5c</code> - <code>0x5f</code></td><td>Unused</td><td>-</td><td></td><td></td></tr>
+<tr><td><a href="#push1"><code>0x60</code></a></td><td>PUSH1</td><td>Place 1 byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push2"><code>0x61</code></a></td><td>PUSH2</td><td>Place 2-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push3"><code>0x62</code></a></td><td>PUSH3</td><td>Place 3-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push4"><code>0x63</code></a></td><td>PUSH4</td><td>Place 4-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push5"><code>0x64</code></a></td><td>PUSH5</td><td>Place 5-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push6"><code>0x65</code></a></td><td>PUSH6</td><td>Place 6-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push7"><code>0x66</code></a></td><td>PUSH7</td><td>Place 7-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push8"><code>0x67</code></a></td><td>PUSH8</td><td>Place 8-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push9"><code>0x68</code></a></td><td>PUSH9</td><td>Place 9-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push10"><code>0x69</code></a></td><td>PUSH10</td><td>Place 10-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push11"><code>0x6a</code></a></td><td>PUSH11</td><td>Place 11-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push12"><code>0x6b</code></a></td><td>PUSH12</td><td>Place 12-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push13"><code>0x6c</code></a></td><td>PUSH13</td><td>Place 13-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push14"><code>0x6d</code></a></td><td>PUSH14</td><td>Place 14-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push15"><code>0x6e</code></a></td><td>PUSH15</td><td>Place 15-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push16"><code>0x6f</code></a></td><td>PUSH16</td><td>Place 16-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push17"><code>0x70</code></a></td><td>PUSH17</td><td>Place 17-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push18"><code>0x71</code></a></td><td>PUSH18</td><td>Place 18-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push19"><code>0x72</code></a></td><td>PUSH19</td><td>Place 19-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push20"><code>0x73</code></a></td><td>PUSH20</td><td>Place 20-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push21"><code>0x74</code></a></td><td>PUSH21</td><td>Place 21-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push22"><code>0x75</code></a></td><td>PUSH22</td><td>Place 22-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push23"><code>0x76</code></a></td><td>PUSH23</td><td>Place 23-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push24"><code>0x77</code></a></td><td>PUSH24</td><td>Place 24-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push25"><code>0x78</code></a></td><td>PUSH25</td><td>Place 25-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push26"><code>0x79</code></a></td><td>PUSH26</td><td>Place 26-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push27"><code>0x7a</code></a></td><td>PUSH27</td><td>Place 27-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push28"><code>0x7b</code></a></td><td>PUSH28</td><td>Place 28-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push29"><code>0x7c</code></a></td><td>PUSH29</td><td>Place 29-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push30"><code>0x7d</code></a></td><td>PUSH30</td><td>Place 30-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push31"><code>0x7e</code></a></td><td>PUSH31</td><td>Place 31-byte item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#push32"><code>0x7f</code></a></td><td>PUSH32</td><td>Place 32-byte (full word) item on stack</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup1"><code>0x80</code></a></td><td>DUP1</td><td>Duplicate 1st stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup2"><code>0x81</code></a></td><td>DUP2</td><td>Duplicate 2nd stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup3"><code>0x82</code></a></td><td>DUP3</td><td>Duplicate 3rd stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup4"><code>0x83</code></a></td><td>DUP4</td><td>Duplicate 4th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup5"><code>0x84</code></a></td><td>DUP5</td><td>Duplicate 5th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup6"><code>0x85</code></a></td><td>DUP6</td><td>Duplicate 6th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup7"><code>0x86</code></a></td><td>DUP7</td><td>Duplicate 7th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup8"><code>0x87</code></a></td><td>DUP8</td><td>Duplicate 8th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup9"><code>0x88</code></a></td><td>DUP9</td><td>Duplicate 9th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup10"><code>0x89</code></a></td><td>DUP10</td><td>Duplicate 10th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup11"><code>0x8a</code></a></td><td>DUP11</td><td>Duplicate 11th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup12"><code>0x8b</code></a></td><td>DUP12</td><td>Duplicate 12th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup13"><code>0x8c</code></a></td><td>DUP13</td><td>Duplicate 13th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup14"><code>0x8d</code></a></td><td>DUP14</td><td>Duplicate 14th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup15"><code>0x8e</code></a></td><td>DUP15</td><td>Duplicate 15th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#dup16"><code>0x8f</code></a></td><td>DUP16</td><td>Duplicate 16th stack item</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap1"><code>0x90</code></a></td><td>SWAP1</td><td>Exchange 1st and 2nd stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap2"><code>0x91</code></a></td><td>SWAP2</td><td>Exchange 1st and 3rd stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap3"><code>0x92</code></a></td><td>SWAP3</td><td>Exchange 1st and 4th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap4"><code>0x93</code></a></td><td>SWAP4</td><td>Exchange 1st and 5th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap5"><code>0x94</code></a></td><td>SWAP5</td><td>Exchange 1st and 6th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap6"><code>0x95</code></a></td><td>SWAP6</td><td>Exchange 1st and 7th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap7"><code>0x96</code></a></td><td>SWAP7</td><td>Exchange 1st and 8th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap8"><code>0x97</code></a></td><td>SWAP8</td><td>Exchange 1st and 9th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap9"><code>0x98</code></a></td><td>SWAP9</td><td>Exchange 1st and 10th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap10"><code>0x99</code></a></td><td>SWAP10</td><td>Exchange 1st and 11th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap11"><code>0x9a</code></a></td><td>SWAP11</td><td>Exchange 1st and 12th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap12"><code>0x9b</code></a></td><td>SWAP12</td><td>Exchange 1st and 13th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap13"><code>0x9c</code></a></td><td>SWAP13</td><td>Exchange 1st and 14th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap14"><code>0x9d</code></a></td><td>SWAP14</td><td>Exchange 1st and 15th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap15"><code>0x9e</code></a></td><td>SWAP15</td><td>Exchange 1st and 16th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#swap16"><code>0x9f</code></a></td><td>SWAP16</td><td>Exchange 1st and 17th stack items</td><td>-</td><td>3</td></tr>
+<tr><td><a href="#log0"><code>0xa0</code></a></td><td>LOG0</td><td>Append log record with no topics</td><td>-</td><td>375</td></tr>
+<tr><td><a href="#log1"><code>0xa1</code></a></td><td>LOG1</td><td>Append log record with one topic</td><td>-</td><td>750</td></tr>
+<tr><td><a href="#log2"><code>0xa2</code></a></td><td>LOG2</td><td>Append log record with two topics</td><td>-</td><td>1125</td></tr>
+<tr><td><a href="#log3"><code>0xa3</code></a></td><td>LOG3</td><td>Append log record with three topics</td><td>-</td><td>1500</td></tr>
+<tr><td><a href="#log4"><code>0xa4</code></a></td><td>LOG4</td><td>Append log record with four topics</td><td>-</td><td>1875</td></tr>
+<tr><td><code>0xa5</code> - <code>0xaf</code></td><td>Unused</td><td>-</td><td></td><td></td></tr>
+<tr><td><code>0xb0</code></td><td>JUMPTO</td><td>Tentative <a href="https://github.com/ethereum/solidity/blob/c61610302aa2bfa029715b534719d25fe3949059/libevmasm/Instruction.h#L176">libevmasm has different numbers</a></td><td><a href="https://github.com/ethereum/EIPs/blob/606405b5ab7aa28d8191958504e8aad4649666c9/EIPS/eip-615.md">EIP 615</a></td><td></td></tr>
+<tr><td><code>0xb1</code></td><td>JUMPIF</td><td>Tentative</td><td><a href="https://github.com/ethereum/EIPs/blob/606405b5ab7aa28d8191958504e8aad4649666c9/EIPS/eip-615.md">EIP 615</a></td><td></td></tr>
+<tr><td><code>0xb2</code></td><td>JUMPSUB</td><td>Tentative</td><td><a href="https://github.com/ethereum/EIPs/blob/606405b5ab7aa28d8191958504e8aad4649666c9/EIPS/eip-615.md">EIP 615</a></td><td></td></tr>
+<tr><td><code>0xb4</code></td><td>JUMPSUBV</td><td>Tentative</td><td><a href="https://github.com/ethereum/EIPs/blob/606405b5ab7aa28d8191958504e8aad4649666c9/EIPS/eip-615.md">EIP 615</a></td><td></td></tr>
+<tr><td><code>0xb5</code></td><td>BEGINSUB</td><td>Tentative</td><td><a href="https://github.com/ethereum/EIPs/blob/606405b5ab7aa28d8191958504e8aad4649666c9/EIPS/eip-615.md">EIP 615</a></td><td></td></tr>
+<tr><td><code>0xb6</code></td><td>BEGINDATA</td><td>Tentative</td><td><a href="https://github.com/ethereum/EIPs/blob/606405b5ab7aa28d8191958504e8aad4649666c9/EIPS/eip-615.md">EIP 615</a></td><td></td></tr>
+<tr><td><code>0xb8</code></td><td>RETURNSUB</td><td>Tentative</td><td><a href="https://github.com/ethereum/EIPs/blob/606405b5ab7aa28d8191958504e8aad4649666c9/EIPS/eip-615.md">EIP 615</a></td><td></td></tr>
+<tr><td><code>0xb9</code></td><td>PUTLOCAL</td><td>Tentative</td><td><a href="https://github.com/ethereum/EIPs/blob/606405b5ab7aa28d8191958504e8aad4649666c9/EIPS/eip-615.md">EIP 615</a></td><td></td></tr>
+<tr><td><code>0xba</code></td><td>GETLOCAL</td><td>Tentative</td><td><a href="https://github.com/ethereum/EIPs/blob/606405b5ab7aa28d8191958504e8aad4649666c9/EIPS/eip-615.md">EIP 615</a></td><td></td></tr>
+<tr><td><code>0xbb</code> - <code>0xe0</code></td><td>Unused</td><td>-</td><td></td><td></td></tr>
+<tr><td><code>0xe1</code></td><td>SLOADBYTES</td><td>Only referenced in pyethereum</td><td>-</td><td>-</td></tr>
+<tr><td><code>0xe2</code></td><td>SSTOREBYTES</td><td>Only referenced in pyethereum</td><td>-</td><td>-</td></tr>
+<tr><td><code>0xe3</code></td><td>SSIZE</td><td>Only referenced in pyethereum</td><td>-</td><td>-</td></tr>
+<tr><td><code>0xe4</code> - <code>0xef</code></td><td>Unused</td><td>-</td><td></td><td></td></tr>
+<tr><td><a href="#create"><code>0xf0</code></a></td><td>CREATE</td><td>Create a new account with associated code</td><td>-</td><td>32000</td></tr>
+<tr><td><a href="#call"><code>0xf1</code></a></td><td>CALL</td><td>Message-call into an account</td><td>-</td><td>Complicated</td></tr>
+<tr><td><a href="#callcode"><code>0xf2</code></a></td><td>CALLCODE</td><td>Message-call into this account with alternative account's code</td><td>-</td><td>Complicated</td></tr>
+<tr><td><a href="#return"><code>0xf3</code></a></td><td>RETURN</td><td>Halt execution returning output data</td><td>-</td><td>0</td></tr>
+<tr><td><a href="#delegatecall"><code>0xf4</code></a></td><td>DELEGATECALL</td><td>Message-call into this account with an alternative account's code, but persisting into this account with an alternative account's code</td><td>-</td><td>Complicated</td></tr>
+<tr><td><a href="#create2"><code>0xf5</code></a></td><td>CREATE2</td><td>Create a new account and set creation address to <code>sha3(sender + sha3(init code)) % 2**160</code></td><td>-</td><td></td></tr>
+<tr><td><code>0xf6</code> - <code>0xf9</code></td><td>Unused</td><td>-</td><td>-</td><td></td></tr>
+<tr><td><a href="#staticcall"><code>0xfa</code></a></td><td>STATICCALL</td><td>Similar to CALL, but does not modify state</td><td>-</td><td>40</td></tr>
+<tr><td><code>0xfb</code></td><td>Unused</td><td>-</td><td>-</td><td></td></tr>
+<tr><td><a href="#revert"><code>0xfd</code></a></td><td>REVERT</td><td>Stop execution and revert state changes, without consuming all provided gas and providing a reason</td><td>-</td><td>0</td></tr>
+<tr><td><code>0xfe</code></td><td>INVALID</td><td>Designated invalid instruction</td><td>-</td><td>0</td></tr>
+<tr><td><a href="#selfdestruct"><code>0xff</code></a></td><td>SELFDESTRUCT</td><td>Halt execution and register account for later deletion</td><td>-</td><td>5000*</td></tr>
+</tbody></table>
+</div>
+<h2 id="instruction-details"><a class="header" href="#instruction-details">Instruction Details</a></h2>
+<hr />
+<h3 id="stop"><a class="header" href="#stop">STOP</a></h3>
+<p><strong>0x00</strong></p>
+<p>() =&gt; ()</p>
+<p>halts execution</p>
+<hr />
+<h3 id="add"><a class="header" href="#add">ADD</a></h3>
+<p><strong>0x01</strong></p>
+<p>Takes two words from stack, adds them, then pushes the result onto the stack.</p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a + b</p>
+<hr />
+<h3 id="mul"><a class="header" href="#mul">MUL</a></h3>
+<p><strong>0x02</strong></p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a * b</p>
+<hr />
+<h3 id="sub"><a class="header" href="#sub">SUB</a></h3>
+<p><strong>0x03</strong></p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a - b</p>
+<hr />
+<h3 id="div"><a class="header" href="#div">DIV</a></h3>
+<p><strong>0x04</strong></p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a / b</p>
+<hr />
+<h3 id="sdiv"><a class="header" href="#sdiv">SDIV</a></h3>
+<p><strong>0x05</strong></p>
+<p>(a: int256, b: int256) =&gt; (c: int256)</p>
+<p>c = a / b</p>
+<hr />
+<h3 id="mod"><a class="header" href="#mod">MOD</a></h3>
+<p><strong>0x06</strong></p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a % b</p>
+<hr />
+<h3 id="smod"><a class="header" href="#smod">SMOD</a></h3>
+<p><strong>0x07</strong></p>
+<p>(a: int256, b: int256) =&gt; (c: int256)</p>
+<p>c = a % b</p>
+<hr />
+<h3 id="addmod"><a class="header" href="#addmod">ADDMOD</a></h3>
+<p><strong>0x08</strong></p>
+<p>(a, b, m) =&gt; (c)</p>
+<p>c = (a + b) % m</p>
+<hr />
+<h3 id="mulmod"><a class="header" href="#mulmod">MULMOD</a></h3>
+<p><strong>0x09</strong></p>
+<p>(a, b, m) =&gt; (c)</p>
+<p>c = (a * b) % m</p>
+<hr />
+<h3 id="exp"><a class="header" href="#exp">EXP</a></h3>
+<p><strong>0x0a</strong></p>
+<p>(a, b, m) =&gt; (c)</p>
+<p>c = (a * b) % m</p>
+<hr />
+<h3 id="signextend"><a class="header" href="#signextend">SIGNEXTEND</a></h3>
+<p><strong>0x0b</strong></p>
+<p>(b, x) =&gt; (y)</p>
+<p>y = SIGNEXTEND(x, b)</p>
+<p>sign extends x from (b + 1) * 8 bits to 256 bits.</p>
+<hr />
+<h3 id="lt"><a class="header" href="#lt">LT</a></h3>
+<p><strong>0x10</strong></p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a &lt; b</p>
+<p>all values interpreted as uint256</p>
+<hr />
+<h3 id="gt"><a class="header" href="#gt">GT</a></h3>
+<p><strong>0x11</strong></p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a &gt; b</p>
+<p>all values interpreted as uint256</p>
+<hr />
+<h3 id="slt"><a class="header" href="#slt">SLT</a></h3>
+<p><strong>0x12</strong></p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a &lt; b</p>
+<p>all values interpreted as int256</p>
+<hr />
+<h3 id="sgt"><a class="header" href="#sgt">SGT</a></h3>
+<p><strong>0x13</strong></p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a &gt; b</p>
+<p>all values interpreted as int256</p>
+<hr />
+<h3 id="eq"><a class="header" href="#eq">EQ</a></h3>
+<p><strong>0x14</strong></p>
+<p>Pops 2 elements off the stack and pushes the value 1 to the stack in case they're equal, otherwise the value 0.</p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a == b</p>
+<hr />
+<h3 id="iszero"><a class="header" href="#iszero">ISZERO</a></h3>
+<p><strong>0x15</strong></p>
+<p>(a) =&gt; (c)</p>
+<p>c = a == 0</p>
+<hr />
+<h3 id="and"><a class="header" href="#and">AND</a></h3>
+<p><strong>0x16</strong></p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a &amp; b</p>
+<hr />
+<h3 id="or"><a class="header" href="#or">OR</a></h3>
+<p><strong>0x17</strong></p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a | b</p>
+<hr />
+<h3 id="xor"><a class="header" href="#xor">XOR</a></h3>
+<p><strong>0x18</strong></p>
+<p>(a, b) =&gt; (c)</p>
+<p>c = a ^ b</p>
+<hr />
+<h3 id="not"><a class="header" href="#not">NOT</a></h3>
+<p><strong>0x19</strong></p>
+<p>(a) =&gt; (c)</p>
+<p>c = ~a</p>
+<hr />
+<h3 id="byte"><a class="header" href="#byte">BYTE</a></h3>
+<p><strong>0x1a</strong></p>
+<p>(i, x) =&gt; (y)</p>
+<p>y = (x &gt;&gt; (248 - i * 8) &amp; 0xff</p>
+<hr />
+<h3 id="shl"><a class="header" href="#shl">SHL</a></h3>
+<p><strong>0x1b</strong></p>
+<p>Pops 2 elements from the stack and pushes the second element onto the stack shifted left by the shift amount (first element).</p>
+<p>(shift, value) =&gt; (res)</p>
+<p>res = value &lt;&lt; shift</p>
+<hr />
+<h3 id="shr"><a class="header" href="#shr">SHR</a></h3>
+<p><strong>0x1c</strong></p>
+<p>Pops 2 elements from the stack and pushes the second element onto the stack shifted right by the shift amount (first element). </p>
+<p>(shift, value) =&gt; (res)</p>
+<p>res = value &gt;&gt; shift</p>
+<hr />
+<h3 id="sar"><a class="header" href="#sar">SAR</a></h3>
+<p><strong>0x1d</strong></p>
+<p>(shift, value) =&gt; (res)</p>
+<p>res = value &gt;&gt; shift</p>
+<p>value: int256</p>
+<hr />
+<h3 id="keccak256"><a class="header" href="#keccak256">KECCAK256</a></h3>
+<p><strong>0x20</strong></p>
+<p>(offset, len) =&gt; (hash)</p>
+<p>hash = keccak256(memory[offset:offset+len])</p>
+<hr />
+<h3 id="address"><a class="header" href="#address">ADDRESS</a></h3>
+<p><strong>0x30</strong></p>
+<p>() =&gt; (address(this))</p>
+<hr />
+<h3 id="balance"><a class="header" href="#balance">BALANCE</a></h3>
+<p><strong>0x31</strong></p>
+<p>() =&gt; (address(this).balance)</p>
+<hr />
+<h3 id="origin"><a class="header" href="#origin">ORIGIN</a></h3>
+<p><strong>0x32</strong></p>
+<p>() =&gt; (tx.origin)</p>
+<hr />
+<h3 id="caller"><a class="header" href="#caller">CALLER</a></h3>
+<p><strong>0x33</strong></p>
+<p>() =&gt; (msg.sender)</p>
+<hr />
+<h3 id="callvalue"><a class="header" href="#callvalue">CALLVALUE</a></h3>
+<p><strong>0x34</strong></p>
+<p>() =&gt; (msg.value)</p>
+<hr />
+<h3 id="calldataload"><a class="header" href="#calldataload">CALLDATALOAD</a></h3>
+<p><strong>0x35</strong></p>
+<p>(index) =&gt; (msg.data[index:index+32])</p>
+<hr />
+<h3 id="calldatasize"><a class="header" href="#calldatasize">CALLDATASIZE</a></h3>
+<p><strong>0x36</strong></p>
+<p>() =&gt; (msg.data.size)</p>
+<hr />
+<h3 id="calldatacopy"><a class="header" href="#calldatacopy">CALLDATACOPY</a></h3>
+<p><strong>0x37</strong></p>
+<p>(memOffset, offset, length) =&gt; ()</p>
+<p>memory[memOffset:memOffset+len] = msg.data[offset:offset+len]</p>
+<hr />
+<h3 id="codesize"><a class="header" href="#codesize">CODESIZE</a></h3>
+<p><strong>0x38</strong></p>
+<p>() =&gt; (address(this).code.size)</p>
+<hr />
+<h3 id="codecopy"><a class="header" href="#codecopy">CODECOPY</a></h3>
+<p><strong>0x39</strong></p>
+<p>(memOffset, codeOffset, len) =&gt; ()</p>
+<p>memory[memOffset:memOffset+len] = address(this).code[codeOffset:codeOffset+len]</p>
+<hr />
+<h3 id="gasprice"><a class="header" href="#gasprice">GASPRICE</a></h3>
+<p><strong>0x3a</strong></p>
+<p>() =&gt; (tx.gasprice)</p>
+<hr />
+<h3 id="extcodesize"><a class="header" href="#extcodesize">EXTCODESIZE</a></h3>
+<p><strong>0x3b</strong></p>
+<p>(addr) =&gt; (address(addr).code.size)</p>
+<hr />
+<h3 id="extcodecopy"><a class="header" href="#extcodecopy">EXTCODECOPY</a></h3>
+<p><strong>0x3c</strong></p>
+<p>(addr, memOffset, offset, length) =&gt; ()</p>
+<p>memory[memOffset:memOffset+len] = address(addr).code[codeOffset:codeOffset+len]</p>
+<hr />
+<h3 id="returndatasize"><a class="header" href="#returndatasize">RETURNDATASIZE</a></h3>
+<p><strong>0x3d</strong></p>
+<p>() =&gt; (size)</p>
+<p>size = RETURNDATASIZE()</p>
+<p>The number of bytes that were returned from the last ext call</p>
+<hr />
+<h3 id="returndatacopy"><a class="header" href="#returndatacopy">RETURNDATACOPY</a></h3>
+<p><strong>0x3e</strong></p>
+<p>(memOffset, offset, length) =&gt; ()</p>
+<p>memory[memOffset:memOffset+len] = RETURNDATA[codeOffset:codeOffset+len]</p>
+<p>RETURNDATA is the data returned from the last external call</p>
+<hr />
+<h3 id="extcodehash"><a class="header" href="#extcodehash">EXTCODEHASH</a></h3>
+<p><strong>0x3f</strong></p>
+<p>(addr) =&gt; (hash)</p>
+<p>hash = address(addr).exists ? keccak256(address(addr).code) : 0</p>
+<hr />
+<h3 id="blockhash"><a class="header" href="#blockhash">BLOCKHASH</a></h3>
+<p><strong>0x40</strong></p>
+<p>(number) =&gt; (hash)</p>
+<p>hash = block.blockHash(number)</p>
+<hr />
+<h3 id="coinbase"><a class="header" href="#coinbase">COINBASE</a></h3>
+<p><strong>0x41</strong></p>
+<p>() =&gt; (block.coinbase)</p>
+<hr />
+<h3 id="timestamp"><a class="header" href="#timestamp">TIMESTAMP</a></h3>
+<p><strong>0x42</strong></p>
+<p>() =&gt; (block.timestamp)</p>
+<hr />
+<h3 id="number"><a class="header" href="#number">NUMBER</a></h3>
+<p><strong>0x43</strong></p>
+<p>() =&gt; (block.number)</p>
+<hr />
+<h3 id="difficulty"><a class="header" href="#difficulty">DIFFICULTY</a></h3>
+<p><strong>0x44</strong></p>
+<p>() =&gt; (block.difficulty)</p>
+<hr />
+<h3 id="gaslimit"><a class="header" href="#gaslimit">GASLIMIT</a></h3>
+<p><strong>0x45</strong></p>
+<p>() =&gt; (block.gaslimit)</p>
+<hr />
+<h3 id="chainid"><a class="header" href="#chainid">CHAINID</a></h3>
+<p><strong>0x46</strong></p>
+<p>() =&gt; (chainid)</p>
+<p>where chainid = 1 for mainnet &amp; some other value for other networks</p>
+<hr />
+<h3 id="selfbalance"><a class="header" href="#selfbalance">SELFBALANCE</a></h3>
+<p><strong>0x47</strong></p>
+<p>() =&gt; (address(this).balance)</p>
+<hr />
+<h3 id="basefee"><a class="header" href="#basefee">BASEFEE</a></h3>
+<p><strong>0x48</strong></p>
+<p>() =&gt; (block.basefee)</p>
+<p>current block's base fee (related to EIP1559)</p>
+<hr />
+<h3 id="pop"><a class="header" href="#pop">POP</a></h3>
+<p><strong>0x50</strong></p>
+<p>(a) =&gt; ()</p>
+<p>discards the top stack item</p>
+<hr />
+<h3 id="mload"><a class="header" href="#mload">MLOAD</a></h3>
+<p><strong>0x51</strong></p>
+<p>(offset) =&gt; (value)</p>
+<p>value = memory[offset:offset+32]</p>
+<hr />
+<h3 id="mstore"><a class="header" href="#mstore">MSTORE</a></h3>
+<p><strong>0x52</strong></p>
+<p>Saves a word to the EVM memory. Pops 2 elements from stack - the first element being the word memory address where the saved value (second element popped from stack) will be stored. </p>
+<p>(offset, value) =&gt; ()</p>
+<p>memory[offset:offset+32] = value</p>
+<hr />
+<h3 id="mstore8"><a class="header" href="#mstore8">MSTORE8</a></h3>
+<p><strong>0x53</strong></p>
+<p>(offset, value) =&gt; ()</p>
+<p>memory[offset:offset+32] = value &amp; 0xff</p>
+<hr />
+<h3 id="sload"><a class="header" href="#sload">SLOAD</a></h3>
+<p><strong>0x54</strong></p>
+<p>Pops 1 element off the stack, that being the key which is the storage slot and returns the read value stored there. </p>
+<p>(key) =&gt; (value)</p>
+<p>value = storage[key]</p>
+<hr />
+<h3 id="sstore"><a class="header" href="#sstore">SSTORE</a></h3>
+<p><strong>0x55</strong></p>
+<p>Pops 2 elements off the stack, the first element being the key and the second being the value which is then stored at the storage slot represented from the first element (key). </p>
+<p>(key, value) =&gt; ()</p>
+<p>storage[key] = value</p>
+<hr />
+<h3 id="jump"><a class="header" href="#jump">JUMP</a></h3>
+<p><strong>0x56</strong></p>
+<p>(dest) =&gt; ()</p>
+<p>pc = dest</p>
+<hr />
+<h3 id="jumpi"><a class="header" href="#jumpi">JUMPI</a></h3>
+<p><strong>0x57</strong></p>
+<p>Conditional - Pops 2 elements from the stack, the first element being the jump location and the second being the value 0 (false) or 1 (true). If the value’s 1 the PC will be altered and the jump executed. Otherwise, the value will be 0 and the PC will remain the same and execution unaltered.</p>
+<p>(dest, cond) =&gt; ()</p>
+<p>pc = cond ? dest : pc + 1</p>
+<hr />
+<h3 id="pc"><a class="header" href="#pc">PC</a></h3>
+<p><strong>0x58</strong></p>
+<p>() =&gt; (pc)</p>
+<hr />
+<h3 id="msize"><a class="header" href="#msize">MSIZE</a></h3>
+<p><strong>0x59</strong></p>
+<p>() =&gt; (memory.size)</p>
+<hr />
+<h3 id="gas"><a class="header" href="#gas">GAS</a></h3>
+<p><strong>0x5a</strong></p>
+<p>() =&gt; (gasRemaining)</p>
+<p>not including the gas required for this opcode</p>
+<hr />
+<h3 id="jumpdest"><a class="header" href="#jumpdest">JUMPDEST</a></h3>
+<p><strong>0x5b</strong></p>
+<p>() =&gt; ()</p>
+<p>noop, marks a valid jump destination</p>
+<hr />
+<h3 id="push1"><a class="header" href="#push1">PUSH1</a></h3>
+<p><strong>0x60</strong></p>
+<p>The following byte is read from PC, placed into a word, then this word is pushed onto the stack.</p>
+<p>() =&gt; (address(this).code[pc+1:pc+2])</p>
+<hr />
+<h3 id="push2"><a class="header" href="#push2">PUSH2</a></h3>
+<p><strong>0x61</strong></p>
+<p>() =&gt; (address(this).code[pc+2:pc+3])</p>
+<hr />
+<h3 id="push3"><a class="header" href="#push3">PUSH3</a></h3>
+<p><strong>0x62</strong></p>
+<p>() =&gt; (address(this).code[pc+3:pc+4])</p>
+<hr />
+<h3 id="push4"><a class="header" href="#push4">PUSH4</a></h3>
+<p><strong>0x63</strong></p>
+<p>() =&gt; (address(this).code[pc+4:pc+5])</p>
+<hr />
+<h3 id="push5"><a class="header" href="#push5">PUSH5</a></h3>
+<p><strong>0x64</strong></p>
+<p>() =&gt; (address(this).code[pc+5:pc+6])</p>
+<hr />
+<h3 id="push6"><a class="header" href="#push6">PUSH6</a></h3>
+<p><strong>0x65</strong></p>
+<p>() =&gt; (address(this).code[pc+6:pc+7])</p>
+<hr />
+<h3 id="push7"><a class="header" href="#push7">PUSH7</a></h3>
+<p><strong>0x66</strong></p>
+<p>() =&gt; (address(this).code[pc+7:pc+8])</p>
+<hr />
+<h3 id="push8"><a class="header" href="#push8">PUSH8</a></h3>
+<p><strong>0x67</strong></p>
+<p>() =&gt; (address(this).code[pc+8:pc+9])</p>
+<hr />
+<h3 id="push9"><a class="header" href="#push9">PUSH9</a></h3>
+<p><strong>0x68</strong></p>
+<p>() =&gt; (address(this).code[pc+9:pc+10])</p>
+<hr />
+<h3 id="push10"><a class="header" href="#push10">PUSH10</a></h3>
+<p><strong>0x69</strong></p>
+<p>() =&gt; (address(this).code[pc+10:pc+11])</p>
+<hr />
+<h3 id="push11"><a class="header" href="#push11">PUSH11</a></h3>
+<p><strong>0x6a</strong></p>
+<p>() =&gt; (address(this).code[pc+11:pc+12])</p>
+<hr />
+<h3 id="push12"><a class="header" href="#push12">PUSH12</a></h3>
+<p><strong>0x6b</strong></p>
+<p>() =&gt; (address(this).code[pc+12:pc+13])</p>
+<hr />
+<h3 id="push13"><a class="header" href="#push13">PUSH13</a></h3>
+<p><strong>0x6c</strong></p>
+<p>() =&gt; (address(this).code[pc+13:pc+14])</p>
+<hr />
+<h3 id="push14"><a class="header" href="#push14">PUSH14</a></h3>
+<p><strong>0x6d</strong></p>
+<p>() =&gt; (address(this).code[pc+14:pc+15])</p>
+<hr />
+<h3 id="push15"><a class="header" href="#push15">PUSH15</a></h3>
+<p><strong>0x6e</strong></p>
+<p>() =&gt; (address(this).code[pc+15:pc+16])</p>
+<hr />
+<h3 id="push16"><a class="header" href="#push16">PUSH16</a></h3>
+<p><strong>0x6f</strong></p>
+<p>() =&gt; (address(this).code[pc+16:pc+17])</p>
+<hr />
+<h3 id="push17"><a class="header" href="#push17">PUSH17</a></h3>
+<p><strong>0x70</strong></p>
+<p>() =&gt; (address(this).code[pc+17:pc+18])</p>
+<hr />
+<h3 id="push18"><a class="header" href="#push18">PUSH18</a></h3>
+<p><strong>0x71</strong></p>
+<p>() =&gt; (address(this).code[pc+18:pc+19])</p>
+<hr />
+<h3 id="push19"><a class="header" href="#push19">PUSH19</a></h3>
+<p><strong>0x72</strong></p>
+<p>() =&gt; (address(this).code[pc+19:pc+20])</p>
+<hr />
+<h3 id="push20"><a class="header" href="#push20">PUSH20</a></h3>
+<p><strong>0x73</strong></p>
+<p>() =&gt; (address(this).code[pc+20:pc+21])</p>
+<hr />
+<h3 id="push21"><a class="header" href="#push21">PUSH21</a></h3>
+<p><strong>0x74</strong></p>
+<p>() =&gt; (address(this).code[pc+21:pc+22])</p>
+<hr />
+<h3 id="push22"><a class="header" href="#push22">PUSH22</a></h3>
+<p><strong>0x75</strong></p>
+<p>() =&gt; (address(this).code[pc+22:pc+23])</p>
+<hr />
+<h3 id="push23"><a class="header" href="#push23">PUSH23</a></h3>
+<p><strong>0x76</strong></p>
+<p>() =&gt; (address(this).code[pc+23:pc+24])</p>
+<hr />
+<h3 id="push24"><a class="header" href="#push24">PUSH24</a></h3>
+<p><strong>0x77</strong></p>
+<p>() =&gt; (address(this).code[pc+24:pc+25])</p>
+<hr />
+<h3 id="push25"><a class="header" href="#push25">PUSH25</a></h3>
+<p><strong>0x78</strong></p>
+<p>() =&gt; (address(this).code[pc+25:pc+26])</p>
+<hr />
+<h3 id="push26"><a class="header" href="#push26">PUSH26</a></h3>
+<p><strong>0x79</strong></p>
+<p>() =&gt; (address(this).code[pc+26:pc+27])</p>
+<hr />
+<h3 id="push27"><a class="header" href="#push27">PUSH27</a></h3>
+<p><strong>0x7a</strong></p>
+<p>() =&gt; (address(this).code[pc+27:pc+28])</p>
+<hr />
+<h3 id="push28"><a class="header" href="#push28">PUSH28</a></h3>
+<p><strong>0x7b</strong></p>
+<p>() =&gt; (address(this).code[pc+28:pc+29])</p>
+<hr />
+<h3 id="push29"><a class="header" href="#push29">PUSH29</a></h3>
+<p><strong>0x7c</strong></p>
+<p>() =&gt; (address(this).code[pc+29:pc+30])</p>
+<hr />
+<h3 id="push30"><a class="header" href="#push30">PUSH30</a></h3>
+<p><strong>0x7d</strong></p>
+<p>() =&gt; (address(this).code[pc+30:pc+31])</p>
+<hr />
+<h3 id="push31"><a class="header" href="#push31">PUSH31</a></h3>
+<p><strong>0x7e</strong></p>
+<p>() =&gt; (address(this).code[pc+31:pc+32])</p>
+<hr />
+<h3 id="push32"><a class="header" href="#push32">PUSH32</a></h3>
+<p><strong>0x7f</strong></p>
+<p>() =&gt; (address(this).code[pc+32:pc+33])</p>
+<hr />
+<h3 id="dup1"><a class="header" href="#dup1">DUP1</a></h3>
+<p><strong>0x80</strong></p>
+<p>(1) =&gt; (1, 1)</p>
+<hr />
+<h3 id="dup2"><a class="header" href="#dup2">DUP2</a></h3>
+<p><strong>0x81</strong></p>
+<p>(1, 2) =&gt; (2, 1, 2)</p>
+<hr />
+<h3 id="dup3"><a class="header" href="#dup3">DUP3</a></h3>
+<p><strong>0x82</strong></p>
+<p>(1, 2, 3) =&gt; (3, 1, 2, 3)</p>
+<hr />
+<h3 id="dup4"><a class="header" href="#dup4">DUP4</a></h3>
+<p><strong>0x83</strong></p>
+<p>(1, ..., 4) =&gt; (4, 1, ..., 4)</p>
+<hr />
+<h3 id="dup5"><a class="header" href="#dup5">DUP5</a></h3>
+<p><strong>0x84</strong></p>
+<p>(1, ..., 5) =&gt; (5, 1, ..., 5)</p>
+<hr />
+<h3 id="dup6"><a class="header" href="#dup6">DUP6</a></h3>
+<p><strong>0x85</strong></p>
+<p>(1, ..., 6) =&gt; (6, 1, ..., 6)</p>
+<hr />
+<h3 id="dup7"><a class="header" href="#dup7">DUP7</a></h3>
+<p><strong>0x86</strong></p>
+<p>(1, ..., 7) =&gt; (7, 1, ..., 7)</p>
+<hr />
+<h3 id="dup8"><a class="header" href="#dup8">DUP8</a></h3>
+<p><strong>0x87</strong></p>
+<p>(1, ..., 8) =&gt; (8, 1, ..., 8)</p>
+<hr />
+<h3 id="dup9"><a class="header" href="#dup9">DUP9</a></h3>
+<p><strong>0x88</strong></p>
+<p>(1, ..., 9) =&gt; (9, 1, ..., 9)</p>
+<hr />
+<h3 id="dup10"><a class="header" href="#dup10">DUP10</a></h3>
+<p><strong>0x89</strong></p>
+<p>(1, ..., 10) =&gt; (10, 1, ..., 10)</p>
+<hr />
+<h3 id="dup11"><a class="header" href="#dup11">DUP11</a></h3>
+<p><strong>0x8a</strong></p>
+<p>(1, ..., 11) =&gt; (11, 1, ..., 11)</p>
+<hr />
+<h3 id="dup12"><a class="header" href="#dup12">DUP12</a></h3>
+<p><strong>0x8b</strong></p>
+<p>(1, ..., 12) =&gt; (12, 1, ..., 12)</p>
+<hr />
+<h3 id="dup13"><a class="header" href="#dup13">DUP13</a></h3>
+<p><strong>0x8c</strong></p>
+<p>(1, ..., 13) =&gt; (13, 1, ..., 13)</p>
+<hr />
+<h3 id="dup14"><a class="header" href="#dup14">DUP14</a></h3>
+<p><strong>0x8d</strong></p>
+<p>(1, ..., 14) =&gt; (14, 1, ..., 14)</p>
+<hr />
+<h3 id="dup15"><a class="header" href="#dup15">DUP15</a></h3>
+<p><strong>0x8e</strong></p>
+<p>(1, ..., 15) =&gt; (15, 1, ..., 15)</p>
+<hr />
+<h3 id="dup16"><a class="header" href="#dup16">DUP16</a></h3>
+<p><strong>0x8f</strong></p>
+<p>(1, ..., 16) =&gt; (16, 1, ..., 16)</p>
+<hr />
+<h3 id="swap1"><a class="header" href="#swap1">SWAP1</a></h3>
+<p><strong>0x90</strong></p>
+<p>(1, 2) =&gt; (2, 1)</p>
+<hr />
+<h3 id="swap2"><a class="header" href="#swap2">SWAP2</a></h3>
+<p><strong>0x91</strong></p>
+<p>(1, 2, 3) =&gt; (3, 2, 1)</p>
+<hr />
+<h3 id="swap3"><a class="header" href="#swap3">SWAP3</a></h3>
+<p><strong>0x92</strong></p>
+<p>(1, ..., 4) =&gt; (4, ..., 1)</p>
+<hr />
+<h3 id="swap4"><a class="header" href="#swap4">SWAP4</a></h3>
+<p><strong>0x93</strong></p>
+<p>(1, ..., 5) =&gt; (5, ..., 1)</p>
+<hr />
+<h3 id="swap5"><a class="header" href="#swap5">SWAP5</a></h3>
+<p><strong>0x94</strong></p>
+<p>(1, ..., 6) =&gt; (6, ..., 1)</p>
+<hr />
+<h3 id="swap6"><a class="header" href="#swap6">SWAP6</a></h3>
+<p><strong>0x95</strong></p>
+<p>(1, ..., 7) =&gt; (7, ..., 1)</p>
+<hr />
+<h3 id="swap7"><a class="header" href="#swap7">SWAP7</a></h3>
+<p><strong>0x96</strong></p>
+<p>(1, ..., 8) =&gt; (8, ..., 1)</p>
+<hr />
+<h3 id="swap8"><a class="header" href="#swap8">SWAP8</a></h3>
+<p><strong>0x97</strong></p>
+<p>(1, ..., 9) =&gt; (9, ..., 1)</p>
+<hr />
+<h3 id="swap9"><a class="header" href="#swap9">SWAP9</a></h3>
+<p><strong>0x98</strong></p>
+<p>(1, ..., 10) =&gt; (10, ..., 1)</p>
+<hr />
+<h3 id="swap10"><a class="header" href="#swap10">SWAP10</a></h3>
+<p><strong>0x99</strong></p>
+<p>(1, ..., 11) =&gt; (11, ..., 1)</p>
+<hr />
+<h3 id="swap11"><a class="header" href="#swap11">SWAP11</a></h3>
+<p><strong>0x9a</strong></p>
+<p>(1, ..., 12) =&gt; (12, ..., 1)</p>
+<hr />
+<h3 id="swap12"><a class="header" href="#swap12">SWAP12</a></h3>
+<p><strong>0x9b</strong></p>
+<p>(1, ..., 13) =&gt; (13, ..., 1)</p>
+<hr />
+<h3 id="swap13"><a class="header" href="#swap13">SWAP13</a></h3>
+<p><strong>0x9c</strong></p>
+<p>(1, ..., 14) =&gt; (14, ..., 1)</p>
+<hr />
+<h3 id="swap14"><a class="header" href="#swap14">SWAP14</a></h3>
+<p><strong>0x9d</strong></p>
+<p>(1, ..., 15) =&gt; (15, ..., 1)</p>
+<hr />
+<h3 id="swap15"><a class="header" href="#swap15">SWAP15</a></h3>
+<p><strong>0x9e</strong></p>
+<p>(1, ..., 16) =&gt; (16, ..., 1)</p>
+<hr />
+<h3 id="swap16"><a class="header" href="#swap16">SWAP16</a></h3>
+<p><strong>0x9f</strong></p>
+<p>(1, ..., 17) =&gt; (17, ..., 1)</p>
+<hr />
+<h3 id="log0"><a class="header" href="#log0">LOG0</a></h3>
+<p><strong>0xa0</strong></p>
+<p>(offset, length) =&gt; ()</p>
+<p>emit(memory[offset:offset+length])</p>
+<hr />
+<h3 id="log1"><a class="header" href="#log1">LOG1</a></h3>
+<p><strong>0xa1</strong></p>
+<p>(offset, length, topic0) =&gt; ()</p>
+<p>emit(memory[offset:offset+length], topic0)</p>
+<hr />
+<h3 id="log2"><a class="header" href="#log2">LOG2</a></h3>
+<p><strong>0xa2</strong></p>
+<p>(offset, length, topic0, topic1) =&gt; ()</p>
+<p>emit(memory[offset:offset+length], topic0, topic1)</p>
+<hr />
+<h3 id="log3"><a class="header" href="#log3">LOG3</a></h3>
+<p><strong>0xa3</strong></p>
+<p>(offset, length, topic0, topic1, topic2) =&gt; ()</p>
+<p>emit(memory[offset:offset+length], topic0, topic1, topic2)</p>
+<hr />
+<h3 id="log4"><a class="header" href="#log4">LOG4</a></h3>
+<p><strong>0xa4</strong></p>
+<p>(offset, length, topic0, topic1, topic2, topic3) =&gt; ()</p>
+<p>emit(memory[offset:offset+length], topic0, topic1, topic2, topic3)</p>
+<hr />
+<h3 id="create"><a class="header" href="#create">CREATE</a></h3>
+<p><strong>0xf0</strong></p>
+<p>(value, offset, length) =&gt; (addr)</p>
+<p>addr = keccak256(rlp([address(this), this.nonce]))[12:]
+addr.code = exec(memory[offset:offset+length])
+addr.balance += value
+this.balance -= value
+this.nonce += 1</p>
+<hr />
+<h3 id="call"><a class="header" href="#call">CALL</a></h3>
+<p><strong>0xf1</strong></p>
+<p>(gas, addr, value, argsOffset, argsLength, retOffset, retLength) =&gt; (success)</p>
+<p>memory[retOffset:retOffset+retLength] = address(addr).callcode.gas(gas).value(value)(memory[argsOffset:argsOffset+argsLength])
+success = true (unless the prev call reverted)</p>
+<hr />
+<h3 id="callcode"><a class="header" href="#callcode">CALLCODE</a></h3>
+<p><strong>0xf2</strong></p>
+<p>(gas, addr, value, argsOffset, argsLength, retOffset, retLength) =&gt; (success)</p>
+<p>memory[retOffset:retOffset+retLength] = address(addr).callcode.gas(gas).value(value)(memory[argsOffset:argsOffset+argsLength])
+success = true (unless the prev call reverted)</p>
+<p>TODO: what's the difference between this &amp; CALL?</p>
+<hr />
+<h3 id="return"><a class="header" href="#return">RETURN</a></h3>
+<p><strong>0xf3</strong></p>
+<p>(offset, length) =&gt; ()</p>
+<p>return memory[offset:offset+length]</p>
+<hr />
+<h3 id="delegatecall"><a class="header" href="#delegatecall">DELEGATECALL</a></h3>
+<p><strong>0xf4</strong></p>
+<p>(gas, addr, argsOffset, argsLength, retOffset, retLength) =&gt; (success)</p>
+<p>memory[retOffset:retOffset+retLength] = address(addr).delegatecall.gas(gas)(memory[argsOffset:argsOffset+argsLength])
+success = true (unless the prev call reverted)</p>
+<hr />
+<h3 id="create2"><a class="header" href="#create2">CREATE2</a></h3>
+<p><strong>0xf5</strong></p>
+<p>(value, offset, length, salt) =&gt; (addr)</p>
+<p>initCode = memory[offset:offset+length]
+addr = keccak256(0xff ++ address(this) ++ salt ++ keccak256(initCode))[12:]
+address(addr).code = exec(initCode)</p>
+<hr />
+<h3 id="staticcall"><a class="header" href="#staticcall">STATICCALL</a></h3>
+<p><strong>0xfa</strong></p>
+<p>(gas, addr, argsOffset, argsLength, retOffset, retLength) =&gt; (success)</p>
+<p>memory[retOffset:retOffset+retLength] = address(addr).delegatecall.gas(gas)(memory[argsOffset:argsOffset+argsLength])
+success = true (unless the prev call reverted)</p>
+<p>TODO: what's the difference between this &amp; DELEGATECALL?</p>
+<hr />
+<h3 id="revert"><a class="header" href="#revert">REVERT</a></h3>
+<p><strong>0xfd</strong></p>
+<p>(offset, length) =&gt; ()</p>
+<p>revert(memory[offset:offset+length])</p>
+<hr />
+<h3 id="selfdestruct"><a class="header" href="#selfdestruct">SELFDESTRUCT</a></h3>
+<p><strong>0xff</strong></p>
+<p>(addr) =&gt; ()</p>
+<p>address(addr).send(address(this).balance)
+this.code = 0</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../learn_evm/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../learn_evm/tracing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../learn_evm/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../learn_evm/tracing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
