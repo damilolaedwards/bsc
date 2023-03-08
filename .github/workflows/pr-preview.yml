@@ -24,11 +24,23 @@ jobs:
           cargo install --git https://github.com/montyly/mdBook.git mdbook || true
       - name: Build artifacts
         run: mdbook build
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+      - name: Cache master build artifacts
+        uses: actions/cache@v3
         with:
-          path: ./book
+          path: book
+          key: book
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: ./book/
+      - name: Checkout branch
+        uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+      - name: Restore master build artifacts from cache
+        uses: actions/cache@v3
+        with:
+          path: book
+          key: book
+      - name: Inspect dir contents
+        run: ls -la
