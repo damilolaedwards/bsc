@@ -117,3 +117,21 @@
 
 
 - [Resources](./resources/tob_blogposts.md)
+    - [Manticore](./program-analysis/manticore/README.md)
+        - [Introduction to symbolic execution](./program-analysis/manticore/symbolic-execution-introduction.md):
+        - [Running under Manticore](./program-analysis/manticore/running-under-manticore.md)
+        - [Getting throwing paths](./program-analysis/manticore/getting-throwing-paths.md)
+        - [Adding constraints](./program-analysis/manticore/adding-constraints.md)
+        - [Exercises](./program-analysis/manticore/exercises/README.md)
+            - [Example](./program-analysis/manticore/exercises/example.md)
+            - [Exercise 1](./program-analysis/manticore/exercises/exercise1.md)
+            - [Exercise 2](./program-analysis/manticore/exercises/exercise2.md)
+
+    - [Slither](./program-analysis/slither/README.md)
+        - [Static Analysis](./program-analysis/slither/static_analysis.md)
+        - [API](./program-analysis/slither/api.md)
+        - [Exercise 1](./program-analysis/slither/exercise1.md)
+        - [Exercise 2](./program-analysis/slither/exercise2.md)
+
+
+- [Resources](./resources/tob_blogposts.md)
