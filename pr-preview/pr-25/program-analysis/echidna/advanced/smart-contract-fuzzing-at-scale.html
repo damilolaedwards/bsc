@@ -1,0 +1,304 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>How to perform smart contract fuzzing at a large scale - Building Secure Contracts</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="This repository, brought to you by Trail of Bits, outlines our guidelines and best practices to write secure smart contracts.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../../favicon.svg">
+        <link rel="shortcut icon" href="../../../favicon.png">
+        <link rel="stylesheet" href="../../../css/variables.css">
+        <link rel="stylesheet" href="../../../css/general.css">
+        <link rel="stylesheet" href="../../../css/chrome.css">
+        <link rel="stylesheet" href="../../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../../highlight.css">
+        <link rel="stylesheet" href="../../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../../static/custom.css">
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <div class="sidebar-book-logo">
+                    <img src="../../../static/TOB_Black.svg">
+                </div>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../../index.html">Introduction</a></li><li class="chapter-item expanded "><a href="../../../development-guidelines/index.html">Development-guidelines</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../development-guidelines/guidelines.html">High-level best practices</a></li><li class="chapter-item "><a href="../../../development-guidelines/token_integration.html">Token integration checklist</a></li><li class="chapter-item "><a href="../../../development-guidelines/incident_response.html">Incident Response Recommendations</a></li><li class="chapter-item "><a href="../../../development-guidelines/workflow.html">Secure development workflow</a></li></ol></li><li class="chapter-item expanded "><a href="../../../learn_evm/index.html">Learn EVM</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../learn_evm/evm_opcodes.html">EVM Opcode Reference</a></li><li class="chapter-item "><a href="../../../learn_evm/tracing.html">Transaction Tracing</a></li><li class="chapter-item "><a href="../../../learn_evm/yellow-paper.html">Yellow Paper Guidance</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../learn_evm/eips_forks.html">Forks &lt;&gt; EIPs</a></li><li class="chapter-item "><a href="../../../learn_evm/cips_forks.html">Forks &lt;&gt; CIPs</a></li><li class="chapter-item "><a href="../../../learn_evm/tips_upgrades.html">Upgrades &lt;&gt; TIPs</a></li><li class="chapter-item "><a href="../../../learn_evm/beps_forks.html">Forks &lt;&gt; BEPs</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../../../not-so-smart-contracts/index.html">Not so smart contracts</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../not-so-smart-contracts/algorand/index.html">Algorand</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../not-so-smart-contracts/algorand/rekeying/index.html">Rekeying</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/algorand/unchecked_transaction_fee/index.html">Unchecked Transaction Fees</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/algorand/closing_account/index.html">Closing Account</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/algorand/closing_asset/index.html">Closing Asset</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/algorand/group_size_check/index.html">Group Size Check</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/algorand/time_based_replay_attack/index.html">Time-based Replay Attack</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/algorand/access_controls/index.html">Access Controls</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/algorand/asset_id_check/index.html">Asset Id Check</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/algorand/denial_of_service/index.html">Denial of Service</a></li></ol></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cairo/index.html">Cairo</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../not-so-smart-contracts/cairo/access_controls/index.html">Improper access controls</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cairo/integer_division/index.html">Integer division errors</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cairo/view_state/index.html">View state modifications</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cairo/arithmetic_overflow/index.html">Arithmetic overflow</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cairo/replay_protection/index.html">Signature replays</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cairo/L1_to_L2_address_conversion/index.html">L1 to L2 Address Conversion</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cairo/incorrect_felt_comparison/index.html">Incorrect Felt Comparison</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cairo/namespace_storage_var_collision/index.html">Namespace Storage Var Collision</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cairo/dangerous_public_imports_in_libraries/index.html">Dangerous Public Imports in Libraries</a></li></ol></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cosmos/index.html">Cosmos</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../not-so-smart-contracts/cosmos/incorrect_getsigners/index.html">Incorrect signers</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cosmos/non_determinism/index.html">Non-determinism</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cosmos/messages_priority/index.html">Not prioritized messages</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cosmos/abci_fast/index.html">Slow ABCI methods</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cosmos/abci_panic/index.html">ABCI methods panic</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cosmos/broken_bookkeeping/index.html">Broken bookkeeping</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cosmos/rounding_errors/index.html">Rounding errors</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cosmos/unregistered_msg_handler/index.html">Unregistered message handler</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/cosmos/missing_error_handler/index.html">Missing error handler</a></li></ol></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/solana/index.html">Solana</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../not-so-smart-contracts/solana/arbitrary_cpi/index.html">Arbitrary CPI</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/solana/improper_pda_validation/index.html">Improper PDA Validation</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/solana/ownership_check/index.html">Ownership Check</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/solana/signer_check/index.html">Signer Check</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/solana/sysvar_account_check/index.html">Sysvar Account Check</a></li></ol></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/substrate/index.html">Substrate</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../not-so-smart-contracts/substrate/arithmetic_overflow/index.html">Arithmetic overflow</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/substrate/dont_panic/index.html">Don't panic!</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/substrate/weights_and_fees/index.html">Weights and fees</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/substrate/verify_first/index.html">Verify first</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/substrate/validate_unsigned/index.html">Unsigned transaction validation</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/substrate/randomness/index.html">Bad randomness</a></li><li class="chapter-item "><a href="../../../not-so-smart-contracts/substrate/origins/index.html">Bad origin</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../../../program-analysis/index.html">Program Analysis</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../program-analysis/echidna/index.html">Echidna</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../program-analysis/echidna/introduction/index.html">Introduction</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../program-analysis/echidna/introduction/fuzzing-introduction.html">Introduction to fuzzing</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/introduction/how-to-test-a-property.html">How to test a property</a></li></ol></li><li class="chapter-item "><a href="../../../program-analysis/echidna/basic/index.html">Basic</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../program-analysis/echidna/basic/testing-modes.html">How to select the most suitable testing mode</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/basic/common-testing-approaches.html">How to select the best testing approach</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/basic/filtering-functions.html">How to filter functions</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/basic/assertion-checking.html">How to test assertions</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/basic/property-creation.html">How to write good properties step by step</a></li></ol></li><li class="chapter-item expanded "><a href="../../../program-analysis/echidna/advanced/index.html">Advanced</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../program-analysis/echidna/advanced/collecting-a-corpus.html">How to collect a corpus</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/advanced/optimization_mode.html">How to use optimization mode</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/advanced/finding-transactions-with-high-gas-consumption.html">How to detect high gas consumption</a></li><li class="chapter-item expanded "><a href="../../../program-analysis/echidna/advanced/smart-contract-fuzzing-at-scale.html" class="active">How to perform smart contract fuzzing at a large scale</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/advanced/testing-bytecode.html">How to test bytecode-only contracts</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/advanced/hevm-cheats-to-test-permit.html">How to use hevm cheats to test permit</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/advanced/end-to-end-testing.html">How to seed Echidna with unit tests</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/advanced/using-multi-abi.html">Understanding and using multi-abi</a></li></ol></li><li class="chapter-item "><a href="../../../program-analysis/echidna/fuzzing_tips.html">Fuzzing tips</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/frequently_asked_questions.html">Frequently Asked Questions</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/exercises/index.html">Exercises</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../program-analysis/echidna/exercises/Exercise-1.html">Exercise 1</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/exercises/Exercise-2.html">Exercise 2</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/exercises/Exercise-3.html">Exercise 3</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/exercises/Exercise-4.html">Exercise 4</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/exercises/Exercise-5.html">Exercise 5</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/exercises/Exercise-6.html">Exercise 6</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/exercises/Exercise-7.html">Exercise 7</a></li><li class="chapter-item "><a href="../../../program-analysis/echidna/exercises/Exercise-8.html">Exercise 8</a></li></ol></li></ol></li><li class="chapter-item "><a href="../../../program-analysis/manticore/index.html">Manticore</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../program-analysis/manticore/symbolic-execution-introduction.html">Introduction to symbolic execution</a></li><li class="chapter-item "><a href="../../../program-analysis/manticore/running-under-manticore.html">Running under Manticore</a></li><li class="chapter-item "><a href="../../../program-analysis/manticore/getting-throwing-paths.html">Getting throwing paths</a></li><li class="chapter-item "><a href="../../../program-analysis/manticore/adding-constraints.html">Adding constraints</a></li><li class="chapter-item "><a href="../../../program-analysis/manticore/exercises/index.html">Exercises</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../program-analysis/manticore/exercises/example.html">Example</a></li><li class="chapter-item "><a href="../../../program-analysis/manticore/exercises/exercise1.html">Exercise 1</a></li><li class="chapter-item "><a href="../../../program-analysis/manticore/exercises/exercise2.html">Exercise 2</a></li></ol></li></ol></li><li class="chapter-item "><a href="../../../program-analysis/slither/index.html">Slither</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../../program-analysis/slither/static_analysis.html">Static Analysis</a></li><li class="chapter-item "><a href="../../../program-analysis/slither/api.html">API</a></li><li class="chapter-item "><a href="../../../program-analysis/slither/exercise1.html">Exercise 1</a></li><li class="chapter-item "><a href="../../../program-analysis/slither/exercise2.html">Exercise 2</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../../../resources/tob_blogposts.html">Resources</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Building Secure Contracts</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/crytic/building-secure-contracts" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/crytic/building-secure-contracts/edit/master/./program-analysis/echidna/advanced/smart-contract-fuzzing-at-scale.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="smart-contract-fuzzing-at-scale-with-echidna"><a class="header" href="#smart-contract-fuzzing-at-scale-with-echidna">Smart contract Fuzzing at scale with Echidna</a></h1>
+<p>In this tutorial we will review how we can create a dedicated server for fuzzing smart contracts using Echidna.</p>
+<h3 id="workflow"><a class="header" href="#workflow">Workflow:</a></h3>
+<ol>
+<li>Install and setup a dedicated server</li>
+<li>Start a short fuzzing campaign</li>
+<li>Start a continuous fuzzing campaign</li>
+<li>Add properties, check coverage and modify the code if necessary</li>
+<li>Ending the campaign </li>
+</ol>
+<h2 id="1-install-and-setup-a-dedicated-server"><a class="header" href="#1-install-and-setup-a-dedicated-server">1. Install and setup a dedicated server</a></h2>
+<p>First, obtain a dedicated server with at least 32 GB of RAM and as many cores as possible. Start by creating a user for the fuzzing campaign. 
+<strong>Only use the root acount to create an unprivileged user</strong>: </p>
+<pre><code># adduser echidna
+# usermod -aG sudo echidna
+</code></pre>
+<p>Then, using that user (<code>echidna</code>), install some basic dependencies:</p>
+<pre><code>$ sudo apt install unzip python3-pip
+</code></pre>
+<p>Then install everything necessary to build your smart contract(s) as well <code>slither</code> and <code>echidna-parade</code>. For instance:</p>
+<pre><code>$ pip3 install solc-select
+$ solc-select install all
+$ pip3 install slither_analyzer
+$ pip3 install echidna_parade
+</code></pre>
+<p>Add <code>$PATH=$PATH:/home/echidna/.local/bin</code> at the end of <code>/home/echidna/.bashrc</code></p>
+<p>Next, install Echidna. The easiest way is to download the latest precompiled Echidna release, uncompress it, and move it to <code>/home/echidna/.local/bin</code>:</p>
+<pre><code>$ wget &quot;https://github.com/crytic/echidna/releases/download/v2.0.0/echidna-test-2.0.0-Ubuntu-18.04.tar.gz&quot;
+$ tar -xf echidna-test-2.0.0-Ubuntu-18.04.tar.gz
+$ mv echidna-test /home/echidna/.local/bin
+</code></pre>
+<h2 id="2-start-a-short-fuzzing-campaign"><a class="header" href="#2-start-a-short-fuzzing-campaign">2. Start a short fuzzing campaign</a></h2>
+<p>Select a contract to test and provide an initialization if needed. It does not have to be perfect, just start with some basic stuff and iterate over the result.
+Before starting this campaign, modify your echidna config to define a corpus directory to use. For instance:</p>
+<pre><code>corpusDir: &quot;corpus-exploration&quot;
+</code></pre>
+<p>This directory will be automatically created but since we are starting a new campaign, <strong>please remove the corpus directory if it was created by a previous echidna campaign</strong>. 
+If you don't have any properties to test, you can use:</p>
+<pre><code>testMode: exploration
+</code></pre>
+<p>to allow Echidna to run without any properties. </p>
+<p>We will start a very short Echidna run (5 minutes), to check that everything looks fine. To do that, use the following config:</p>
+<pre><code>testLimit: 100000000000
+timeout: 300 # 5 minutes
+</code></pre>
+<p>After it runs, check the coverage file, located in <code>corpus-exploration/covered.*.txt</code>. If the initialization is wrong, <strong>clean the <code>corpus-exploration</code> directory</strong> and restart the campaign.</p>
+<h2 id="3-starting-a-continuous-fuzzing-campaign"><a class="header" href="#3-starting-a-continuous-fuzzing-campaign">3. Starting a continuous fuzzing campaign</a></h2>
+<p>When you are satisfied with the first iteration of the initialization, we can start a &quot;continuous campaign&quot; for exploration and testing using <a href="https://github.com/agroce/echidna-parade">echidna-parade</a>. Before starting, double check your config file. For instance, if you added properties, do not forget to remove <code>benchmarkMode</code>.</p>
+<p><code>echidna-parade</code> is a tool is used to launch multiple Echidna instances at the same time, keeping track of the corpora of each one. Each instance will be configured to run for a certain amount of time, with different parameters, in order to maximize the chance to reach new code.</p>
+<p>We will show it with an example, where:</p>
+<ul>
+<li>the initial corpus is empty</li>
+<li>the base config file will be <code>exploration.yaml</code></li>
+<li>the time to run the initial instance will be 3600 seconds (1 hour)</li>
+<li>the time to run each &quot;generation&quot; will be 1800 seconds (30 minutes)</li>
+<li>the campaign will run in continuous mode (if timeout is -1, it means run forever)</li>
+<li>the number of Echidna instances per generation will be 8. This should be adjusted according to the number of available cores, but avoid using all your cores if you don't want to kill your server</li>
+<li>the target contract is named <code>C</code></li>
+<li>the file that contains the contract is <code>test.sol</code></li>
+</ul>
+<p>Finally, we will log the stdout and stderr in <code>parade.log</code> and <code>parade.err</code> and fork the process to let it run forever. </p>
+<pre><code>$ echidna-parade test.sol --config exploration.yaml --initial_time 3600 --gen_time 1800 --timeout -1 --ncores 8 --contract C &gt; parade.log 2&gt; parade.err &amp;
+</code></pre>
+<p><strong>After you run this command, exit the shell so you won't kill it accidentally if your connection fails.</strong></p>
+<h2 id="4-add-more-properties-check-coverage-and-modify-the-code-if-necessary"><a class="header" href="#4-add-more-properties-check-coverage-and-modify-the-code-if-necessary">4. Add more properties, check coverage and modify the code if necessary</a></h2>
+<p>In this step, we can add more properties while Echidna is exploring the contracts. Keep in mind that you should avoid changing the ABI of the contracts 
+(otherwise the quality of the corpus will degrade). </p>
+<p>Also, we can tweak the code to improve coverage, but before starting that, we need to know how to monitor our fuzzing campaign. We can use this command:</p>
+<pre><code>$ watch &quot;grep 'COLLECTING NEW COVERAGE' parade.log | tail -n 30&quot;
+</code></pre>
+<p>When new coverage is found, you will see something like this:</p>
+<pre><code>COLLECTING NEW COVERAGE: parade.181140/gen.30.10/corpus/coverage/-3538310549422809236.txt
+COLLECTING NEW COVERAGE: parade.181140/gen.35.9/corpus/coverage/5960152130200926175.txt
+COLLECTING NEW COVERAGE: parade.181140/gen.35.10/corpus/coverage/3416698846701985227.txt
+COLLECTING NEW COVERAGE: parade.181140/gen.36.6/corpus/coverage/-3997334938716772896.txt
+COLLECTING NEW COVERAGE: parade.181140/gen.37.7/corpus/coverage/323061126212903141.txt
+COLLECTING NEW COVERAGE: parade.181140/gen.37.6/corpus/coverage/6733481703877290093.txt
+</code></pre>
+<p>you can verify the corresponding covered file, such as <code>parade.181140/gen.37.6/corpus/covered.1615497368.txt</code>. </p>
+<p>For examples on how to help Echidna to improve its coverage, please review the <a href="./collecting-a-corpus.html">improving coverage tutorial</a>.</p>
+<p>To monitor failed properties, use this command:</p>
+<pre><code>$ watch &quot;grep 'FAIL' parade.log | tail -n 30&quot;
+</code></pre>
+<p>When failed properties are found, you will see something like this:</p>
+<pre><code>NEW FAILURE: assertion in f: failed!💥
+parade.181140/gen.179.0 FAILED
+parade.181140/gen.179.3 FAILED
+parade.181140/gen.180.2 FAILED
+parade.181140/gen.180.4 FAILED
+parade.181140/gen.180.3 FAILED
+...
+</code></pre>
+<h2 id="4-ending-the-campaign"><a class="header" href="#4-ending-the-campaign">4. Ending the campaign</a></h2>
+<p>When you are satisfied with the coverage results, you can terminate the continuous campaign using:</p>
+<pre><code>$ killall echidna-parade echidna
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../../program-analysis/echidna/advanced/finding-transactions-with-high-gas-consumption.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../../../program-analysis/echidna/advanced/testing-bytecode.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../../program-analysis/echidna/advanced/finding-transactions-with-high-gas-consumption.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../../../program-analysis/echidna/advanced/testing-bytecode.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../../elasticlunr.min.js"></script>
+        <script src="../../../mark.min.js"></script>
+        <script src="../../../searcher.js"></script>
+
+        <script src="../../../clipboard.min.js"></script>
+        <script src="../../../highlight.js"></script>
+        <script src="../../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
