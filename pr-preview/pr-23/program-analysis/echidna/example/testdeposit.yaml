@@ -1,3 +1,0 @@
-testMode: assertion
-testLimit: 50000
-shrinkLimit: 1000
