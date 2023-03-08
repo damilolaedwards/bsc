@@ -24,7 +24,7 @@ jobs:
       - name: Copy PR build to new directory
         run: rsync -av --exclude=pr-preview/* pr-preview/pr-${{ github.event.pull_request.number }} pr-preview/
       - name: Cache PR build artifacts
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: pr-preview/pr-${{ github.event.pull_request.number }}
           key: pr-preview-${{ github.event.pull_request.number }}
@@ -37,7 +37,7 @@ jobs:
         with:
           ref: master
       - name: Restore PR build artifacts from cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: pr-preview/pr-${{ github.event.pull_request.number }}
           key: pr-preview-${{ github.event.pull_request.number }}
@@ -48,8 +48,6 @@ jobs:
       - name: Include PR preview in master build
         run: |
           mv pr-preview/pr-${{ github.event.pull_request.number }} book/pr-${{ github.event.pull_request.number }}
-          ls -la ./book/pr-preview/
-          ls -la ./book/pr-13/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
@@ -67,14 +65,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-  cleanup:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true || github.event.pull_request.state == 'closed'
-    steps:
-      - name: Delete PR preview directory
-        run: rm -rf pr-preview/pr-${{ github.event.pull_request.number }}
-      - name: Save PR build artifacts to cache
-        uses: actions/cache@v2
-        with:
-          path: pr-preview/pr-${{ github.event.pull_request.number }}
-          key: pr-preview-${{ github.event.pull_request.number }}
