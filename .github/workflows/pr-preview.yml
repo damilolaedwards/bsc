@@ -44,8 +44,22 @@ jobs:
         with:
           path: ./book
           key: master-book
-      - name: Inspect dir contents
-        run: |
-          ls -la
-          ls -la pr-preview
-
+      - name: Move preview contents into the master book
+        run: mv ./pr-preview ./book
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./book
+  deploy:
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
