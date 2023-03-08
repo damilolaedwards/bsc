@@ -117,3 +117,8 @@
 
 
 - [Resources](./resources/tob_blogposts.md)
+- [Slither](./program-analysis/slither/README.md)
+        - [Static Analysis](./program-analysis/slither/static_analysis.md)
+        - [API](./program-analysis/slither/api.md)
+        - [Exercise 1](./program-analysis/slither/exercise1.md)
+        - [Exercise 2](./program-analysis/slither/exercise2.md)
