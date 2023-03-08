@@ -13,6 +13,7 @@ concurrency: preview-${{ github.ref }}
 
 jobs:
   deploy-preview:
+    if: github.event.action == 'opened' || github.event.action == 'reopened'  || github.event.action == 'synchronize'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master branch
